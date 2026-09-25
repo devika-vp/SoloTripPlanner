@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan Your Trip – SafeRoute</title>
     <link rel="stylesheet" href="plan-trip.css">
+    <link rel="stylesheet" href="inner-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Animated background -->
@@ -64,7 +68,14 @@
                     <span class="style-desc">Everything!</span>
                 </button>
             </div>
-            <button class="btn-next" onclick="nextStep(1)" style="display: none;" id="nextBtn1">Next</button>
+            <!--<button class="btn-next" onclick="nextStep(1)" style="display: none;" id="nextBtn1">Next</button>-->
+            <button class="btn-next" 
+        onclick="nextStep(1)" 
+        id="nextBtn1" 
+        disabled>
+    Next
+</button>
+
         </div>
 
         <!-- Step 2: Experience Level -->

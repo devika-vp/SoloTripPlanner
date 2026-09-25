@@ -5,11 +5,232 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Places – SafeRoute</title>
     <link rel="stylesheet" href="places.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .places-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .places-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .places-header h1 {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        #backBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #backBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            max-width: 700px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: #667eea;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #764ba2;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .modal-details {
+            padding: 30px;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .detail-section p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .safety-score {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .safety-bar {
+            height: 10px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcf7f);
+            border-radius: 10px;
+            flex: 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .itinerary-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .itinerary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .places-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .places-header h1 {
+                font-size: 1.8em;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="inner-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="places-wrapper">
         <header class="places-header">
-            <h1 id="cityTitle">Top Places</h1>
+            <h1 id="cityTitle">✨ Top Places</h1>
             <button id="backBtn">⬅ Back to Trip Planner</button>
         </header>
 
@@ -24,7 +245,7 @@
             <span class="close">&times;</span>
             <div class="modal-body">
                 <div class="modal-header">
-                    <h2 id="modalPlaceName"></h2>
+                    <h2 id="modalPlaceName">Place Name</h2>
                     <img id="modalPlaceImage" src="" alt="place" class="modal-image">
                 </div>
                 <div class="modal-details">
@@ -46,7 +267,7 @@
                     </div>
                     <div class="detail-section">
                         <h3>🛡️ Solo Travel Safety Score</h3>
-                        <div id="safetyScoreContainer" class="safety-score">
+                        <div class="safety-score">
                             <div id="safetyBar" class="safety-bar"></div>
                             <p id="modalSafetyScore"></p>
                         </div>
@@ -55,7 +276,7 @@
                         <h3>💡 Safety Tips</h3>
                         <p id="modalSafetyTips"></p>
                     </div>
-                    <div class="detail-section button-section">
+                    <div class="detail-section">
                         <button id="createItineraryBtn" class="itinerary-btn">📋 Create Itinerary</button>
                     </div>
                 </div>
@@ -64,17 +285,15 @@
     </div>
 
     <script src="city-places.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdO0RDuPEAnh1QArC6ZrPjiI5PcQfYj64"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdO0RDuPEAnh1QArC6ZrPjiI5PcQfYj64"></script>
     <script>
-        // Back button functionality
         document.getElementById("backBtn").addEventListener("click", () => {
             window.location.href = "plan-trip.html";
         });
 
-        // Check for selected city/state in localStorage
-        const selectedState = localStorage.getItem("selectedCity");
-        if (!selectedState) {
-            alert("No state selected! Redirecting to trip planner.");
+        const selectedCity = localStorage.getItem("selectedCity");
+        if (!selectedCity) {
+            alert("No city selected! Redirecting to trip planner.");
             window.location.href = "plan-trip.html";
         }
     </script>
